@@ -26,7 +26,7 @@ function appendLegend(container, item) {
 }
 
 try {
-  const response = await fetch('datos/manifest.json');
+  const response = await fetch('datos/manifest.json', {cache: 'no-store'});
   if (!response.ok) throw Error('Inventario no disponible');
   const data = await response.json();
   const corners = data.corners;
