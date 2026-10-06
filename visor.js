@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+import {providers, terrainBackground} from './fondos.js?v=20261006-seis';
 
 const status = document.querySelector('#status');
 const intro = document.querySelector('#intro');
@@ -32,9 +33,13 @@ try {
   const corners = data.corners;
   const bounds = [[corners[2][1], corners[0][0]], [corners[0][1], corners[2][0]]];
   const map = L.map('map').fitBounds(bounds);
-  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19, attribution: '© OpenStreetMap contributors'
+  const osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19, attribution: '<a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors</a>'
   }).addTo(map);
+  const satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+    maxZoom: 19, attribution: providers.satellite.credits
+  });
+  L.control.layers({'OpenStreetMap': osm, 'Satelital · Esri': satellite}, {}, {collapsed: false}).addTo(map);
   const groups = new Map();
   for (const item of data.layers) {
     if (!groups.has(item.group)) {
@@ -101,6 +106,14 @@ try {
   texture.colorSpace = THREE.SRGBColorSpace;
   texture.anisotropy = 4;
   const dem = data.layers.find(l => l.id === 'dem_cuenca_2_p2');
+  const backgroundSelect = document.querySelector('#background3');
+  const credits = document.querySelector('#credits3');
+  const backgroundStatus = document.querySelector('#backgroundstatus');
+
+  async function baseImage(provider) {
+    if (provider === 'dem') return image(dem.texture);
+    return terrainBackground(provider, data.extent, data.crs, canvas.width);
+  }
 
   function image(url) {
     if (!images.has(url)) {
@@ -119,17 +132,30 @@ try {
     const selected = slots.filter(s => s.select.value).map(s => ({
       item: data.layers.find(l => l.id === s.select.value), opacity: Number(s.slider.value) / 100
     }));
-    const loaded = await Promise.all([image(dem.texture), ...selected.map(s => image(s.item.texture))]);
+    const provider = backgroundSelect.value;
+    let base;
+    let failed = false;
+    backgroundStatus.textContent = provider === 'dem' ? '' : 'Cargando fondo en línea…';
+    try { base = await baseImage(provider); }
+    catch (error) { base = await image(dem.texture); failed = true; }
+    const loaded = await Promise.all(selected.map(s => image(s.item.texture)));
     if (version !== compositionVersion) return;
     context.clearRect(0, 0, canvas.width, canvas.height);
     context.globalAlpha = 1;
-    context.drawImage(loaded[0], 0, 0, canvas.width, canvas.height);
+    context.drawImage(base, 0, 0, canvas.width, canvas.height);
     selected.forEach((s, i) => {
       context.globalAlpha = s.opacity;
-      context.drawImage(loaded[i + 1], 0, 0, canvas.width, canvas.height);
+      context.drawImage(loaded[i], 0, 0, canvas.width, canvas.height);
     });
     context.globalAlpha = 1;
     texture.needsUpdate = true;
+    backgroundStatus.textContent = failed ? 'Fondo no disponible: se muestra el DEM. Puedes volver a intentarlo seleccionando el fondo.' : '';
+    credits.replaceChildren();
+    if (provider !== 'dem' && !failed) {
+      const link = document.createElement('a'); link.href = providers[provider].link;
+      link.textContent = providers[provider].credits; link.target = '_blank'; link.rel = 'noopener';
+      credits.append(link);
+    }
     const legend = document.querySelector('#legend3');
     legend.replaceChildren();
     for (const s of selected) {
@@ -143,18 +169,19 @@ try {
       appendLegend(details, s.item);
       legend.append(details);
     }
-    status.textContent = data.layers.length + ' capas · ' + selected.length + '/3 superpuestas en 3D';
+    status.textContent = data.layers.length + ' capas · ' + selected.length + '/6 superpuestas en 3D';
   }
 
   function updateComposition() {
     if (mesh) compose().catch(error => { status.textContent = error.message; });
   }
 
-  for (let i = 0; i < 3; i++) {
+  backgroundSelect.onchange = updateComposition;
+  for (let i = 0; i < 6; i++) {
     const box = document.createElement('div');
     box.className = 'slot';
     const label = document.createElement('label');
-    label.textContent = 'Capa ' + (i + 1) + (i === 0 ? ' · inferior' : i === 2 ? ' · superior' : ' · intermedia');
+    label.textContent = 'Capa ' + (i + 1) + (i === 0 ? ' · inferior' : i === 5 ? ' · superior' : ' · intermedia');
     const select = document.createElement('select');
     select.id = 'slot-' + i; label.htmlFor = select.id;
     const none = document.createElement('option'); none.value = ''; none.textContent = 'Sin superposición'; select.append(none);

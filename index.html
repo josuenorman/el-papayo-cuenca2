@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Cuenca 2 · El Papayo · 2D/3D</title>
-  <link rel="stylesheet" href="vendor/leaflet.css"><link rel="stylesheet" href="estilos.css">
+  <link rel="stylesheet" href="vendor/leaflet.css"><link rel="stylesheet" href="estilos.css?v=20261006-seis">
 </head>
 <body>
   <header><div><h1>Área de estudio · El Papayo</h1><p>Cuenca 2 · Waslala | Exploración territorial preliminar</p></div><button id="presentation">Presentación y modelo</button></header>
@@ -11,7 +11,10 @@
     <aside>
       <div class="controls"><button id="mode2" aria-pressed="true">Mapa 2D</button><button id="mode3" aria-pressed="false">Terreno 3D</button></div>
       <div id="threecontrols" hidden>
-        <h2>Comparar sobre el DEM</h2><p class="hint">Hasta tres capas, de abajo hacia arriba. El relieve permanece visible bajo ellas.</p>
+        <h2>Comparar sobre el DEM</h2><p class="hint">Hasta seis capas, de abajo hacia arriba. Baja la opacidad de las capas superiores para ver las inferiores.</p>
+        <label class="control-label" for="background3">Fondo del terreno</label>
+        <select id="background3"><option value="dem">Relieve · DEM</option><option value="osm">OpenStreetMap</option><option value="satellite">Satelital · Esri World Imagery</option></select>
+        <p class="hint">Los fondos en línea requieren internet. La imagen se adapta al DEM y no agrega precisión ni indica movimiento reciente.</p><p id="backgroundstatus" class="hint" role="status"></p>
         <div id="slots"></div>
         <label class="control-label" for="exaggeration">Exageración vertical: <output id="exaggerationvalue">1×</output></label>
         <input id="exaggeration" type="range" min="1" max="5" step="0.5" value="1">
@@ -22,7 +25,7 @@
       <p class="note">Resultados preliminares: requieren verificación de campo. El polígono de El Papayo es una referencia, no una delimitación de peligro validada.</p>
       <p id="status" role="status">Cargando datos…</p><div id="layers"></div>
     </aside>
-    <section id="stage" aria-label="Visualización cartográfica"><div id="map"></div><div id="terrain"></div><div id="badge3" hidden>Terreno derivado del DEM · alturas en metros</div></section>
+    <section id="stage" aria-label="Visualización cartográfica"><div id="map"></div><div id="terrain"></div><div id="badge3" hidden>Terreno derivado del DEM · alturas en metros<div id="credits3"></div></div></section>
   </main>
   <dialog id="intro" aria-labelledby="introtitle">
     <div class="intro-top"><span class="eyebrow">Waslala · Cuenca 2 / P2</span><button id="closeintro" aria-label="Cerrar presentación">✕</button></div>
@@ -31,11 +34,12 @@
     <div class="cards"><article><h3>01 · Datos del terreno</h3><p>DEM recortado a Cuenca 2, límite hidrográfico, red hídrica y referencias existentes. FABDEM es la fuente indicada por el autor; versión y procedencia documental pendientes de completar.</p></article><article><h3>02 · Procesamiento en QGIS</h3><p>Relieve, pendientes, curvatura, TWI y SPI. Los productos D8 se mantienen como auxiliares; no deben confundirse con la acumulación MFD del modelo actual.</p></article><article><h3>03 · Modelo SHALSTAB</h3><p>Tamiz preliminar de estabilidad somera controlada por lluvia. Corrida de control: <code>control_20260930_110830</code>. La acumulación MFD se calcula con GRASS sobre el DEM completo y luego se recorta a Cuenca 2.</p></article></div>
     <details open><summary>Cómo interpretar los resultados del modelo</summary><p>El modelo calcula la humedad relativa crítica <strong>m<sub>crit</sub> = h/z</strong> y los umbrales críticos de recarga y lluvia efectiva.</p><ul><li><strong>m<sub>crit</sub> ≤ 0:</strong> inestable aun seco dentro del modelo.</li><li><strong>0 &lt; m<sub>crit</sub> ≤ 1:</strong> estabilidad condicionada por humedad.</li><li><strong>m<sub>crit</sub> &gt; 1:</strong> estable aun saturado dentro del modelo.</li></ul><p>Las comparaciones con lluvia media y máxima de siete días suponen <strong>P = q</strong>: un límite hipotético de recarga del 100 %, no recarga observada ni pronóstico.</p></details>
     <details><summary>Parámetros y ecuaciones de la corrida de control</summary><p>φ′ = 25° · c′ = 3 kPa · ρ<sub>s</sub> = 1900 kg/m³ · z = 2 m · K = 0.004 m/h · cohesión adicional de raíces = 0.</p><p class="formula">m<sub>crit</sub> = (ρ<sub>s</sub>/ρ<sub>w</sub>)[1 − tan β / tan φ′] + c′/[ρ<sub>w</sub> g z cos² β tan φ′]</p><p class="formula">(q/T)<sub>crit</sub> = sin β · (b/A) · m<sub>crit</sub> &nbsp; | &nbsp; T = 24 K z cos β</p><p>β: pendiente; φ′: ángulo de fricción; c′: cohesión; z: profundidad del suelo; K: conductividad hidráulica; A: área contribuyente; b: ancho de celda. Con las conversiones correspondientes, q<sub>crit</sub> se expresa en mm/día.</p></details>
-    <details><summary>Qué cambia en la presentación web</summary><p>Las capas se renderizan como imágenes: se mejora el contraste de variables continuas mediante percentiles 2–98, sin modificar los datos originales. Las clases y sus colores categóricos SHALSTAB se conservan. La leyenda de cada capa indica el rango visualizado.</p><p>El 2D utiliza imágenes reproyectadas para el mapa web. El 3D conserva la cuadrícula UTM del análisis y una malla simplificada de 256 × 256 muestras del DEM; no añade precisión al terreno original. Tres capas se componen por orden y opacidad sobre una base de relieve iluminada. Las imágenes no permiten consultar valores de píxel originales.</p></details>
+    <details><summary>Qué cambia en la presentación web</summary><p>Las capas se renderizan como imágenes: se mejora el contraste de variables continuas mediante percentiles 2–98, sin modificar los datos originales. Las clases y sus colores categóricos SHALSTAB se conservan. La leyenda de cada capa indica el rango visualizado.</p><p>El 2D utiliza imágenes reproyectadas para el mapa web. El 3D conserva la cuadrícula UTM del análisis y una malla simplificada de 256 × 256 muestras del DEM; no añade precisión al terreno original. Hasta seis capas se componen por orden y opacidad. Puedes elegir el DEM, OpenStreetMap o Esri World Imagery como fondo. Los fondos en línea se reproyectan a UTM y dependen del proveedor; no son imágenes en tiempo real. Las imágenes no permiten consultar valores de píxel originales.</p><p>Las fallas de referencia se muestran con trazo más grueso para facilitar su lectura; el grosor es simbólico y no representa el ancho real de una zona de falla.</p></details>
     <p class="note"><strong>Limitaciones:</strong> no demuestra saturación real, falla vial ni movimiento rotacional. TWI no mide humedad y SPI no mide erosión observada. Deben verificarse grietas, drenajes, condiciones del suelo y geometría del movimiento en campo; no ajustar la resistencia solo para aumentar la coincidencia con El Papayo.</p>
     <footer><span>Norman García · Diagnóstico territorial · Octubre 2026</span><button id="explore">Explorar el visor</button></footer>
   </dialog>
   <script src="vendor/leaflet.js"></script>
+  <script src="vendor/proj4.js"></script>
   <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
-  <script type="module" src="visor.js?v=20261006-capas22"></script>
+  <script type="module" src="visor.js?v=20261006-seis"></script>
 </body></html>
