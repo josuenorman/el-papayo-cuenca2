@@ -547,11 +547,11 @@
       ],
       "style": {
         "color": "#b7484b",
-        "weight": 1,
+        "weight": 3.7795275590551185,
         "opacity": 1.0,
         "fillOpacity": 0
       },
-      "rendering": "Estilo del proyecto QGIS conservado. En 2D se muestra la geometría completa; la textura 3D se limita al DEM disponible.",
+      "rendering": "Color QGIS conservado; grosor aumentado solo para lectura web (no representa ancho real de falla). En 2D se muestra la geometría completa; la textura 3D se limita al DEM disponible.",
       "featureCount": 16,
       "sourceCrs": "EPSG:32616"
     }
