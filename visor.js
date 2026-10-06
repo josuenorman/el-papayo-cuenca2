@@ -62,7 +62,7 @@ try {
       const r = await fetch(item.url);
       if (!r.ok) throw Error('Capa no disponible: ' + item.name);
       layer = L.geoJSON(await r.json(), {
-        style: {color: item.id.includes('riesgo') ? '#d15630' : '#236694', weight: 2, fillOpacity: 0.04},
+        style: item.style || {color: item.id.includes('riesgo') ? '#d15630' : '#236694', weight: 2, fillOpacity: 0.04},
         onEachFeature: (feature, l) => {
           const node = document.createElement('div');
           node.textContent = item.name;
