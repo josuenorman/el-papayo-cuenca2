@@ -504,6 +504,56 @@
       "texture": "datos/zona_de_riesgo_el_papayo.png",
       "type": "vector",
       "url": "datos/zona_de_riesgo_el_papayo.geojson"
+    },
+    {
+      "id": "clip_red_hidrica",
+      "name": "Clip_red_hidrica",
+      "group": "01 · Área de estudio y drenaje",
+      "description": "Red hídrica de referencia incorporada desde Clip_red_hidrica: 79 elementos; incluye cursos permanentes e intermitentes según sus atributos. Procedencia documental pendiente de completar. No sustituye verificación de cauces y drenajes en campo.",
+      "visible": false,
+      "type": "vector",
+      "url": "datos/clip_red_hidrica.geojson",
+      "texture": "datos/clip_red_hidrica.png",
+      "legend": [
+        {
+          "label": "Clip_red_hidrica",
+          "color": "#4ccaff"
+        }
+      ],
+      "style": {
+        "color": "#4ccaff",
+        "weight": 2.267716535433071,
+        "opacity": 1.0,
+        "fillOpacity": 0
+      },
+      "rendering": "Estilo del proyecto QGIS conservado. En 2D se muestra la geometría completa; la textura 3D se limita al DEM disponible.",
+      "featureCount": 79,
+      "sourceCrs": "EPSG:32616"
+    },
+    {
+      "id": "clip_tectonica",
+      "name": "Clip_tectonica",
+      "group": "05 · Tectónica — referencia",
+      "description": "Referencia tectónica incorporada desde Clip_tectonica: 16 elementos con tipos de falla normal y de rumbo dextral/sinestral en sus atributos. El campo Fuente no contiene una referencia documental. No demuestra actividad reciente ni confirma el mecanismo de movimiento en El Papayo.",
+      "visible": false,
+      "type": "vector",
+      "url": "datos/clip_tectonica.geojson",
+      "texture": "datos/clip_tectonica.png",
+      "legend": [
+        {
+          "label": "Clip_tectonica",
+          "color": "#b7484b"
+        }
+      ],
+      "style": {
+        "color": "#b7484b",
+        "weight": 1,
+        "opacity": 1.0,
+        "fillOpacity": 0
+      },
+      "rendering": "Estilo del proyecto QGIS conservado. En 2D se muestra la geometría completa; la textura 3D se limita al DEM disponible.",
+      "featureCount": 16,
+      "sourceCrs": "EPSG:32616"
     }
   ]
 }
