@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "comunidad",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "id": "feature-1", "__gm_id": "feature-1", "__gm_shape": "marker" }, "geometry": { "type": "Point", "coordinates": [ -85.356214655488515, 13.336761605845879 ] } }
+]
+}

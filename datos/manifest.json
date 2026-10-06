@@ -1,0 +1,509 @@
+{
+  "crs": "EPSG:32616",
+  "extent": [
+    670563.187022423,
+    1473884.88405892,
+    688920.370733356,
+    1493449.75023195
+  ],
+  "corners": [
+    [
+      -85.4240744739849,
+      13.504267788821986
+    ],
+    [
+      -85.2545154721784,
+      13.503144476648567
+    ],
+    [
+      -85.25579211123774,
+      13.326313179402659
+    ],
+    [
+      -85.42522723011048,
+      13.327421253876508
+    ]
+  ],
+  "layers": [
+    {
+      "id": "clase_lluvia_critica_control_actual_c2",
+      "name": "01 Clase final — control",
+      "description": "Clases de lluvia efectiva crítica del modelo SHALSTAB, corrida control_20260930_110830. Tamiz preliminar de estabilidad somera controlada por lluvia; no equivale a una zonificación de peligro validada.",
+      "visible": false,
+      "group": "03 · SHALSTAB — control actual",
+      "texture": "datos/clase_lluvia_critica_control_actual_c2.png",
+      "type": "raster",
+      "url": "datos/clase_lluvia_critica_control_actual_c2_2d.png",
+      "legend": [
+        {
+          "label": "1 · Inestable aun seco",
+          "color": "#7f0000"
+        },
+        {
+          "label": "2 · 0–30 mm/d",
+          "color": "#d73027"
+        },
+        {
+          "label": "3 · 31–100 mm/d",
+          "color": "#fc8d59"
+        },
+        {
+          "label": "4 · 101–150 mm/d",
+          "color": "#fee08b"
+        },
+        {
+          "label": "5 · 151–200 mm/d",
+          "color": "#d9ef8b"
+        },
+        {
+          "label": "6 · 201–999 mm/d",
+          "color": "#91cf60"
+        },
+        {
+          "label": "7 · Estable o >999 mm/d",
+          "color": "#1a9850"
+        }
+      ]
+    },
+    {
+      "id": "estado_fisico_control_actual_c2",
+      "name": "02 Estado físico — control",
+      "description": "Estado de estabilidad dentro del modelo: inestable aun seco, condicionado por humedad o estable aun saturado. No demuestra movimiento real ni falla vial.",
+      "visible": false,
+      "group": "03 · SHALSTAB — control actual",
+      "texture": "datos/estado_fisico_control_actual_c2.png",
+      "type": "raster",
+      "url": "datos/estado_fisico_control_actual_c2_2d.png",
+      "legend": [
+        {
+          "label": "Inestable aun seco",
+          "color": "#a50026"
+        },
+        {
+          "label": "Condicional a humedad",
+          "color": "#fdae61"
+        },
+        {
+          "label": "Estable aun saturado",
+          "color": "#1a9850"
+        }
+      ]
+    },
+    {
+      "id": "humedad_relativa_critica_control_actual_c2",
+      "name": "03 Humedad crítica h/z — control",
+      "description": "Humedad relativa crítica h/z dentro del modelo SHALSTAB; es un umbral modelado y no humedad observada.",
+      "visible": false,
+      "group": "03 · SHALSTAB — control actual",
+      "rendering": "Contraste visual P2–P98; valores extremos conservados con colores de los extremos. No modifica el análisis.",
+      "texture": "datos/humedad_relativa_critica_control_actual_c2.png",
+      "type": "raster",
+      "url": "datos/humedad_relativa_critica_control_actual_c2_2d.png",
+      "legend": [
+        {
+          "label": "-0.693",
+          "color": "#fff7bc"
+        },
+        {
+          "label": "0.035",
+          "color": "#c7e9b4"
+        },
+        {
+          "label": "0.763",
+          "color": "#7fcdbb"
+        },
+        {
+          "label": "1.49",
+          "color": "#2c7fb8"
+        },
+        {
+          "label": "2.22",
+          "color": "#253494"
+        }
+      ]
+    },
+    {
+      "id": "lluvia_efectiva_critica_control_actual_c2",
+      "name": "04 · Lluvia efectiva crítica",
+      "description": "Lluvia efectiva crítica modelada, en mm/día. No debe confundirse con lluvia medida ni con un pronóstico.",
+      "visible": false,
+      "group": "03 · SHALSTAB — control actual",
+      "rendering": "Contraste visual P2–P98; valores extremos conservados con colores de los extremos. No modifica el análisis.",
+      "texture": "datos/lluvia_efectiva_critica_control_actual_c2.png",
+      "type": "raster",
+      "url": "datos/lluvia_efectiva_critica_control_actual_c2_2d.png",
+      "legend": [
+        {
+          "label": "0.011",
+          "color": "#fff7bc"
+        },
+        {
+          "label": "0.419",
+          "color": "#c7e9b4"
+        },
+        {
+          "label": "0.826",
+          "color": "#7fcdbb"
+        },
+        {
+          "label": "1.23",
+          "color": "#2c7fb8"
+        },
+        {
+          "label": "1.64",
+          "color": "#253494"
+        }
+      ]
+    },
+    {
+      "id": "q_sobre_t_critico_control_actual_c2",
+      "name": "05 · Relación q/T crítica",
+      "description": "Relación crítica entre recarga y transmisividad del modelo SHALSTAB.",
+      "visible": false,
+      "group": "03 · SHALSTAB — control actual",
+      "rendering": "Contraste visual P2–P98; valores extremos conservados con colores de los extremos. No modifica el análisis.",
+      "texture": "datos/q_sobre_t_critico_control_actual_c2.png",
+      "type": "raster",
+      "url": "datos/q_sobre_t_critico_control_actual_c2_2d.png",
+      "legend": [
+        {
+          "label": "6.37e-05",
+          "color": "#fff7bc"
+        },
+        {
+          "label": "0.00231",
+          "color": "#c7e9b4"
+        },
+        {
+          "label": "0.00455",
+          "color": "#7fcdbb"
+        },
+        {
+          "label": "0.00679",
+          "color": "#2c7fb8"
+        },
+        {
+          "label": "0.00903",
+          "color": "#253494"
+        }
+      ]
+    },
+    {
+      "id": "respuesta_peqq_media7d_control_actual_c2",
+      "name": "06 · Respuesta con lluvia media 7 d",
+      "description": "Respuesta hipotética del modelo al escenario de precipitación de 7 días. La igualdad P=q supone un límite de recarga del 100%; no representa recarga observada.",
+      "visible": false,
+      "group": "03 · SHALSTAB — control actual",
+      "texture": "datos/respuesta_peqq_media7d_control_actual_c2.png",
+      "type": "raster",
+      "url": "datos/respuesta_peqq_media7d_control_actual_c2_2d.png",
+      "legend": [
+        {
+          "label": "Sin respuesta",
+          "color": "#d9d9d9"
+        },
+        {
+          "label": "Con respuesta",
+          "color": "#d73027"
+        }
+      ]
+    },
+    {
+      "id": "respuesta_peqq_max7d_control_actual_c2",
+      "name": "07 · Respuesta con lluvia máxima 7 d",
+      "description": "Respuesta hipotética del modelo al escenario de precipitación de 7 días. La igualdad P=q supone un límite de recarga del 100%; no representa recarga observada.",
+      "visible": false,
+      "group": "03 · SHALSTAB — control actual",
+      "texture": "datos/respuesta_peqq_max7d_control_actual_c2.png",
+      "type": "raster",
+      "url": "datos/respuesta_peqq_max7d_control_actual_c2_2d.png",
+      "legend": [
+        {
+          "label": "Sin respuesta",
+          "color": "#d9d9d9"
+        },
+        {
+          "label": "Con respuesta",
+          "color": "#7f0000"
+        }
+      ]
+    },
+    {
+      "id": "longest_flowpath_cuenca_2_p2",
+      "name": "Cauce principal / trayectoria de flujo",
+      "description": "Trayectoria de flujo más larga de la cuenca, derivada del procesamiento hidrológico.",
+      "visible": true,
+      "group": "01 · Área de estudio y drenaje",
+      "texture": "datos/longest_flowpath_cuenca_2_p2.png",
+      "type": "vector",
+      "url": "datos/longest_flowpath_cuenca_2_p2.geojson"
+    },
+    {
+      "id": "comunidad",
+      "name": "Comunidad",
+      "description": "Punto de referencia de la comunidad, procedente del GeoJSON existente; no representa el límite completo de la comunidad.",
+      "visible": false,
+      "group": "01 · Área de estudio y drenaje",
+      "texture": "datos/comunidad.png",
+      "type": "vector",
+      "url": "datos/comunidad.geojson"
+    },
+    {
+      "id": "d8pointer_cuenca_2_p2",
+      "name": "D8Pointer Cuenca 2 P2",
+      "description": "Dirección de flujo D8 del procesamiento hidrológico. Es una capa técnica auxiliar, no un resultado SHALSTAB.",
+      "visible": false,
+      "group": "04 · Procesamiento hidrológico",
+      "texture": "datos/d8pointer_cuenca_2_p2.png",
+      "type": "raster",
+      "url": "datos/d8pointer_cuenca_2_p2_2d.png",
+      "legend": [
+        {
+          "label": "1",
+          "color": "#000000"
+        },
+        {
+          "label": "128",
+          "color": "#ffffff"
+        }
+      ]
+    },
+    {
+      "id": "dem_cuenca_2_p2",
+      "name": "DEM Cuenca_2_P2",
+      "description": "Modelo digital de elevación recortado a Cuenca 2. FABDEM es la fuente indicada por el autor; versión y procedencia documental pendientes de completar. Resolución y CRS se consultan en los metadatos del ráster.",
+      "visible": false,
+      "group": "02 · Relieve e índices",
+      "rendering": "Contraste visual P2–P98; valores extremos conservados con colores de los extremos. No modifica el análisis.",
+      "texture": "datos/dem_cuenca_2_p2.png",
+      "type": "raster",
+      "url": "datos/dem_cuenca_2_p2_2d.png",
+      "legend": [
+        {
+          "label": "215",
+          "color": "#e0eee0"
+        },
+        {
+          "label": "376",
+          "color": "#a8c199"
+        },
+        {
+          "label": "536",
+          "color": "#dbc99d"
+        },
+        {
+          "label": "696",
+          "color": "#a88d72"
+        },
+        {
+          "label": "857",
+          "color": "#f1eee6"
+        }
+      ]
+    },
+    {
+      "id": "flowaccum_cuenca_2_p2",
+      "name": "FlowAccum Cuenca 2 P2",
+      "description": "Acumulación de flujo del procesamiento hidrológico D8. La corrida SHALSTAB actual utiliza acumulación MFD GRASS sobre el DEM completo, según su metodología.",
+      "visible": false,
+      "group": "04 · Procesamiento hidrológico",
+      "rendering": "Contraste visual P2–P98; valores extremos conservados con colores de los extremos. No modifica el análisis.",
+      "texture": "datos/flowaccum_cuenca_2_p2.png",
+      "type": "raster",
+      "url": "datos/flowaccum_cuenca_2_p2_2d.png",
+      "legend": [
+        {
+          "label": "30.4",
+          "color": "#fff7bc"
+        },
+        {
+          "label": "1.07e+04",
+          "color": "#c7e9b4"
+        },
+        {
+          "label": "2.14e+04",
+          "color": "#7fcdbb"
+        },
+        {
+          "label": "3.21e+04",
+          "color": "#2c7fb8"
+        },
+        {
+          "label": "4.27e+04",
+          "color": "#253494"
+        }
+      ]
+    },
+    {
+      "id": "cuenca_2_p2",
+      "name": "Límite de Cuenca 2",
+      "description": "Límite hidrográfico de Cuenca 2 derivado del procesamiento SIG. No es un límite administrativo.",
+      "visible": true,
+      "group": "01 · Área de estudio y drenaje",
+      "texture": "datos/cuenca_2_p2.png",
+      "type": "vector",
+      "url": "datos/cuenca_2_p2.geojson"
+    },
+    {
+      "id": "outlet_cuenca_2_p2",
+      "name": "Outlet Cuenca 2 P2",
+      "description": "Punto de cierre utilizado para la delimitación de Cuenca 2.",
+      "visible": false,
+      "group": "01 · Área de estudio y drenaje",
+      "texture": "datos/outlet_cuenca_2_p2.png",
+      "type": "vector",
+      "url": "datos/outlet_cuenca_2_p2.geojson"
+    },
+    {
+      "id": "plan_curvature_cuenca_2_p2",
+      "name": "Plan Curvature - Cuenca_2_P2",
+      "description": "Curvatura en planta del terreno. Permite reconocer tendencias de convergencia y divergencia del flujo; no representa mediciones directas de escorrentía.",
+      "visible": false,
+      "group": "02 · Relieve e índices",
+      "rendering": "Contraste visual P2–P98; valores extremos conservados con colores de los extremos. No modifica el análisis.",
+      "texture": "datos/plan_curvature_cuenca_2_p2.png",
+      "type": "raster",
+      "url": "datos/plan_curvature_cuenca_2_p2_2d.png",
+      "legend": [
+        {
+          "label": "-0.073",
+          "color": "#2166ac"
+        },
+        {
+          "label": "-0.0449",
+          "color": "#92c5de"
+        },
+        {
+          "label": "-0.0168",
+          "color": "#f7f7f7"
+        },
+        {
+          "label": "0.0113",
+          "color": "#f4a582"
+        },
+        {
+          "label": "0.0394",
+          "color": "#b2182b"
+        }
+      ]
+    },
+    {
+      "id": "red_hidrica_cuenca_2_p2",
+      "name": "Red hídrica",
+      "description": "Red de drenaje derivada del DEM y procesamiento hidrológico; verificar cauces y drenajes en campo.",
+      "visible": true,
+      "group": "01 · Área de estudio y drenaje",
+      "texture": "datos/red_hidrica_cuenca_2_p2.png",
+      "type": "vector",
+      "url": "datos/red_hidrica_cuenca_2_p2.geojson"
+    },
+    {
+      "id": "spi_cuenca_2_p2",
+      "name": "SPI - Cuenca_2_P2",
+      "description": "Índice de potencia de corriente (SPI), indicador topográfico relativo de concentración de escorrentía y potencial erosivo; requiere interpretación y validación de campo.",
+      "visible": false,
+      "group": "02 · Relieve e índices",
+      "rendering": "Contraste visual P2–P98; valores extremos conservados con colores de los extremos. No modifica el análisis.",
+      "texture": "datos/spi_cuenca_2_p2.png",
+      "type": "raster",
+      "url": "datos/spi_cuenca_2_p2_2d.png",
+      "legend": [
+        {
+          "label": "17.4",
+          "color": "#fff7bc"
+        },
+        {
+          "label": "2.22e+04",
+          "color": "#c7e9b4"
+        },
+        {
+          "label": "4.45e+04",
+          "color": "#7fcdbb"
+        },
+        {
+          "label": "6.67e+04",
+          "color": "#2c7fb8"
+        },
+        {
+          "label": "8.89e+04",
+          "color": "#253494"
+        }
+      ]
+    },
+    {
+      "id": "slope_deg_cuenca_2_p2",
+      "name": "Slope - Cuenca_2_P2",
+      "description": "Pendiente del terreno en grados, derivada del DEM de Cuenca 2 mediante procesamiento SIG.",
+      "visible": false,
+      "group": "02 · Relieve e índices",
+      "texture": "datos/slope_deg_cuenca_2_p2.png",
+      "type": "raster",
+      "url": "datos/slope_deg_cuenca_2_p2_2d.png",
+      "legend": [
+        {
+          "label": "0.00",
+          "color": "#ffffcc"
+        },
+        {
+          "label": "14.90",
+          "color": "#c2e699"
+        },
+        {
+          "label": "29.80",
+          "color": "#78c679"
+        },
+        {
+          "label": "44.70",
+          "color": "#fdae61"
+        },
+        {
+          "label": "59.60",
+          "color": "#d73027"
+        }
+      ]
+    },
+    {
+      "id": "twi_cuenca_2_p2",
+      "name": "TWI - Cuenca_2_P2",
+      "description": "Índice topográfico de humedad (TWI). Expresa la tendencia topográfica a acumular humedad; no mide humedad real ni demuestra saturación.",
+      "visible": false,
+      "group": "02 · Relieve e índices",
+      "rendering": "Contraste visual P2–P98; valores extremos conservados con colores de los extremos. No modifica el análisis.",
+      "texture": "datos/twi_cuenca_2_p2.png",
+      "type": "raster",
+      "url": "datos/twi_cuenca_2_p2_2d.png",
+      "legend": [
+        {
+          "label": "7.33",
+          "color": "#fff7bc"
+        },
+        {
+          "label": "9.91",
+          "color": "#c7e9b4"
+        },
+        {
+          "label": "12.5",
+          "color": "#7fcdbb"
+        },
+        {
+          "label": "15.1",
+          "color": "#2c7fb8"
+        },
+        {
+          "label": "17.7",
+          "color": "#253494"
+        }
+      ]
+    },
+    {
+      "id": "zona_de_riesgo_el_papayo",
+      "name": "El Papayo · área de estudio de referencia",
+      "description": "Polígono existente de referencia de El Papayo. No es una delimitación de peligro validada ni un inventario de grietas; requiere verificación de campo.",
+      "visible": true,
+      "group": "01 · Área de estudio y drenaje",
+      "texture": "datos/zona_de_riesgo_el_papayo.png",
+      "type": "vector",
+      "url": "datos/zona_de_riesgo_el_papayo.geojson"
+    }
+  ]
+}
