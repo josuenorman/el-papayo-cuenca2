@@ -7,7 +7,9 @@ export function initializeLocation(map, data, getTerrain) {
   const follow = document.querySelector('#followlocation');
   const message = document.querySelector('#locationstatus');
   let watch = null, latest = null, marker2, accuracy2, marker3, generation = 0;
-  let firstFix = true;
+  let firstFix = true, lastError = null, permissionState = 'sin comprobar';
+  const diagnosis = document.querySelector('#locationdiagnosis');
+  const diagnosisButton = document.querySelector('#diagnoselocation');
   const raycaster = new THREE.Raycaster();
   proj4.defs('EPSG:32616', '+proj=utm +zone=16 +datum=WGS84 +units=m +no_defs');
 
@@ -64,7 +66,7 @@ export function initializeLocation(map, data, getTerrain) {
   }
 
   function renderMessage() {
-    if (!latest) return;
+    if (lastError || !latest) return;
     const c = latest.coords;
     const age = Math.max(0, Math.floor((Date.now() - latest.timestamp) / 1000));
     const prefix = watch === null ? 'Última ubicación · seguimiento detenido. ' :
@@ -86,6 +88,7 @@ export function initializeLocation(map, data, getTerrain) {
   function receive(position) {
     const c = position.coords;
     if (![c.latitude, c.longitude, c.accuracy].every(Number.isFinite) || c.accuracy < 0) return;
+    lastError = null;
     latest = position;
     const latlng = [c.latitude, c.longitude];
     if (!marker2) {
@@ -105,6 +108,7 @@ export function initializeLocation(map, data, getTerrain) {
     firstFix = false;
     start.textContent = 'Centrar mi ubicación';
     renderMessage();
+    if (!diagnosis.hidden) checkPermission();
   }
 
   function halt() {
@@ -113,11 +117,15 @@ export function initializeLocation(map, data, getTerrain) {
     watch = null;
     stop.disabled = true;
     start.textContent = 'Mi ubicación';
+    lastError = null;
     renderMessage();
   }
 
   start.onclick = () => {
-    if (watch !== null) { centerCurrent(); return; }
+    if (watch !== null && latest && !lastError) { centerCurrent(); return; }
+    // A repeated click while acquiring or after a GPS error starts a fresh request.
+    if (watch !== null) halt();
+    lastError = null;
     if (!window.isSecureContext) {
       message.textContent = 'Abrí el visor mediante HTTPS para usar la ubicación.'; return;
     }
@@ -128,20 +136,54 @@ export function initializeLocation(map, data, getTerrain) {
     const token = ++generation;
     message.textContent = 'Buscando ubicación… Permití el acceso y activá la ubicación del teléfono.';
     stop.disabled = false;
+    start.textContent = 'Reintentar ubicación';
+    try {
     watch = navigator.geolocation.watchPosition(position => {
       if (token === generation) receive(position);
     }, error => {
       if (token !== generation) return;
+      const detail = {code: error.code, message: error.message || 'Sin detalle del navegador'};
       if (error.code === 1) {
         halt();
-        message.textContent = 'Permiso de ubicación denegado. Habilitalo en los permisos del sitio y volvé a intentar.';
+        lastError = detail;
+        message.textContent = 'El navegador bloqueó la ubicación (código 1). Si aparece un aviso de burbujas o superposiciones, el permiso no pudo completarse. Pulsá Diagnóstico GPS para ver el estado.';
       } else {
-        message.textContent = (error.code === 3 ? 'El GPS tardó en responder.' : 'Ubicación no disponible.') +
-          ' Buscá un lugar despejado; el seguimiento seguirá intentando.' +
+        lastError = detail;
+        start.textContent = 'Reintentar ubicación';
+        message.textContent = (error.code === 3 ? 'El GPS tardó en responder (código 3).' : 'Ubicación no disponible (código 2).') +
+          ' Pulsá Reintentar ubicación. El seguimiento también seguirá intentando.' +
           (latest ? ' Se conserva la última posición recibida.' : '');
       }
+      showDiagnosis();
     }, {enableHighAccuracy: true, maximumAge: 0, timeout: 20000});
+    } catch (error) {
+      halt();
+      lastError = {code: 'excepción', message: error.message};
+      message.textContent = 'No se pudo iniciar el GPS. Pulsá Diagnóstico GPS.';
+      showDiagnosis();
+    }
   };
+
+  function showDiagnosis() {
+    diagnosis.textContent = 'Conexión segura: ' + (window.isSecureContext ? 'sí' : 'no') +
+      ' · API de ubicación: ' + (navigator.geolocation ? 'disponible' : 'no disponible') +
+      ' · Permiso del sitio: ' + permissionState +
+      ' · Seguimiento: ' + (watch === null ? 'detenido' : 'solicitado') +
+      (lastError ? '\nError ' + lastError.code + ': ' + lastError.message : '') +
+      '\nEl diagnóstico no solicita permiso ni guarda tu ubicación.';
+  }
+  async function checkPermission() {
+    try {
+      if (!navigator.permissions?.query) permissionState = 'consulta no compatible';
+      else {
+        const result = await navigator.permissions.query({name: 'geolocation'});
+        permissionState = {granted: 'permitido', denied: 'bloqueado', prompt: 'pendiente de autorización'}[result.state] || result.state;
+      }
+    } catch { permissionState = 'no se pudo consultar'; }
+    showDiagnosis();
+  }
+  diagnosisButton.onclick = () => { diagnosis.hidden = false; showDiagnosis(); checkPermission(); };
+
   stop.onclick = halt;
   follow.onchange = () => { if (follow.checked) centerCurrent(); };
   map.on('dragstart', () => { follow.checked = false; });
@@ -149,10 +191,13 @@ export function initializeLocation(map, data, getTerrain) {
     const {controls} = getTerrain();
     if (controls) controls.addEventListener('start', () => { follow.checked = false; });
   }
-  const timer = setInterval(() => { if (latest) renderMessage(); }, 5000);
+  let timer = setInterval(() => { if (latest) renderMessage(); }, 5000);
   window.addEventListener('pagehide', () => {
     halt(); clearInterval(timer);
-  }, {once: true});
+  });
+  window.addEventListener('pageshow', event => {
+    if (event.persisted) timer = setInterval(() => { if (latest) renderMessage(); }, 5000);
+  });
   return {
     refresh: () => { update3D(follow.checked && watch !== null); renderMessage(); },
     attachControls

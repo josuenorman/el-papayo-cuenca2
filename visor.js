@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import {initializeLocation} from './ubicacion.js?v=20261009-gps';
+import {initializeLocation} from './ubicacion.js?v=20261009-gps2';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import {providers, terrainBackground} from './fondos.js?v=20261006-seis';
 

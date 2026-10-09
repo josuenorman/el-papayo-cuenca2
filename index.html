@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Cuenca 2 · El Papayo · 2D/3D</title>
-  <link rel="stylesheet" href="vendor/leaflet.css"><link rel="stylesheet" href="estilos.css?v=20261009-gps">
+  <link rel="stylesheet" href="vendor/leaflet.css"><link rel="stylesheet" href="estilos.css?v=20261009-gps2">
 </head>
 <body>
   <header><div><h1>Área de estudio · El Papayo</h1><p>Cuenca 2 · Waslala | Exploración territorial preliminar</p></div><button id="presentation">Presentación y modelo</button></header>
@@ -14,6 +14,8 @@
         <div class="controls"><button id="locate">Mi ubicación</button><button id="stoplocation" disabled>Detener GPS</button></div>
         <label><input id="followlocation" type="checkbox" checked> Seguir mi posición en 2D y 3D</label>
         <p id="locationstatus" class="hint" role="status" aria-live="polite">Activá el GPS para ver tu posición. Al mover el mapa, se pausa el centrado.</p>
+        <button id="diagnoselocation">Diagnóstico GPS</button>
+        <pre id="locationdiagnosis" class="hint" style="white-space:pre-wrap;overflow-wrap:anywhere" hidden></pre>
         <p class="hint">La ubicación no se guarda. Mantené el visor abierto. Los mapas en línea requieren internet.</p>
       </section>
       <div id="threecontrols" hidden>
@@ -47,6 +49,6 @@
   <script src="vendor/leaflet.js"></script>
   <script src="vendor/proj4.js"></script>
   <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
-  <script type="module" src="visor.js?v=20261009-gps"></script>
+  <script type="module" src="visor.js?v=20261009-gps2"></script>
 </body></html>
 
