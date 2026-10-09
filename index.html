@@ -3,13 +3,19 @@
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Cuenca 2 · El Papayo · 2D/3D</title>
-  <link rel="stylesheet" href="vendor/leaflet.css"><link rel="stylesheet" href="estilos.css?v=20261006-seis">
+  <link rel="stylesheet" href="vendor/leaflet.css"><link rel="stylesheet" href="estilos.css?v=20261009-gps">
 </head>
 <body>
   <header><div><h1>Área de estudio · El Papayo</h1><p>Cuenca 2 · Waslala | Exploración territorial preliminar</p></div><button id="presentation">Presentación y modelo</button></header>
   <main>
     <aside>
       <div class="controls"><button id="mode2" aria-pressed="true">Mapa 2D</button><button id="mode3" aria-pressed="false">Terreno 3D</button></div>
+      <section class="location-controls" aria-label="Ubicación en tiempo real">
+        <div class="controls"><button id="locate">Mi ubicación</button><button id="stoplocation" disabled>Detener GPS</button></div>
+        <label><input id="followlocation" type="checkbox" checked> Seguir mi posición en 2D y 3D</label>
+        <p id="locationstatus" class="hint" role="status" aria-live="polite">Activá el GPS para ver tu posición. Al mover el mapa, se pausa el centrado.</p>
+        <p class="hint">La ubicación no se guarda. Mantené el visor abierto. Los mapas en línea requieren internet.</p>
+      </section>
       <div id="threecontrols" hidden>
         <h2>Comparar sobre el DEM</h2><p class="hint">Hasta seis capas, de abajo hacia arriba. Baja la opacidad de las capas superiores para ver las inferiores.</p>
         <label class="control-label" for="background3">Fondo del terreno</label>
@@ -41,5 +47,6 @@
   <script src="vendor/leaflet.js"></script>
   <script src="vendor/proj4.js"></script>
   <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
-  <script type="module" src="visor.js?v=20261006-seis"></script>
+  <script type="module" src="visor.js?v=20261009-gps"></script>
 </body></html>
+

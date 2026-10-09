@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import {initializeLocation} from './ubicacion.js?v=20261009-gps';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import {providers, terrainBackground} from './fondos.js?v=20261006-seis';
 
@@ -96,6 +97,7 @@ try {
   }
 
   let renderer, scene, camera, controls, mesh, terrainGrid;
+  const location = initializeLocation(map, data, () => ({scene, camera, controls, mesh, terrainGrid}));
   let compositionVersion = 0;
   const images = new Map();
   const slots = [];
@@ -243,6 +245,7 @@ try {
     texture.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
     area.append(renderer.domElement);
     controls = new OrbitControls(camera, renderer.domElement); controls.enableDamping = true;
+    location.attachControls();
     resetCamera();
     mesh.scale.y = Number(document.querySelector('#exaggeration').value);
     function resize() {
@@ -255,6 +258,7 @@ try {
       if (area.style.display === 'none') return;
       controls.update(); renderer.render(scene, camera);
     });
+    location.refresh();
     await compose();
   }
 
@@ -262,8 +266,9 @@ try {
     const value = Number(event.target.value);
     document.querySelector('#exaggerationvalue').value = value + '×';
     if (mesh) mesh.scale.y = value;
+    location.refresh();
   };
-  document.querySelector('#reset3').onclick = () => { if (camera) resetCamera(); };
+  document.querySelector('#reset3').onclick = () => { if (camera) { document.querySelector('#followlocation').checked = false; resetCamera(); } };
   function mode(is3D) {
     document.querySelector('#terrain').style.display = is3D ? 'block' : 'none';
     document.querySelector('#map').style.display = is3D ? 'none' : 'block';
@@ -273,12 +278,13 @@ try {
     document.querySelector('#mode2').setAttribute('aria-pressed', String(!is3D));
     document.querySelector('#mode3').setAttribute('aria-pressed', String(is3D));
   }
-  document.querySelector('#mode2').onclick = () => { mode(false); map.invalidateSize(); };
+  document.querySelector('#mode2').onclick = () => { mode(false); map.invalidateSize(); location.refresh(); };
   document.querySelector('#mode3').onclick = async () => {
     mode(true);
-    try { await initialize3D(); } catch (error) { status.textContent = 'Error 3D: ' + error.message; }
+    try { await initialize3D(); location.refresh(); } catch (error) { status.textContent = 'Error 3D: ' + error.message; }
   };
   status.textContent = data.layers.length + ' capas disponibles · Análisis preliminar';
 } catch (error) {
   status.textContent = 'Error: ' + error.message;
 }
+
